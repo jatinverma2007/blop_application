@@ -29,8 +29,12 @@ const UpdateBlog = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const { blog } = useSelector(store => store.blog)
-    const selectBlog = blog.find(blog => blog._id === id)
-    const [content, setContent] = useState(selectBlog.description);
+    const selectBlog = blog?.find(blog => blog._id === id)
+    const [content, setContent] = useState(selectBlog?.description || "");
+
+    if (!selectBlog) {
+        return <div className='pt-20 text-center text-xl'>Blog not found or still loading...</div>
+    }
 
     const [blogData, setBlogData] = useState({
         title: selectBlog?.title,
@@ -94,13 +98,9 @@ const UpdateBlog = () => {
     }
 
     const togglePublishUnpublish = async (action) => {
-        console.log("action", action);
-
         try {
-            const res = await axios.patch(`${import.meta.env.VITE_API_URL}/api/v1/blog/${id}`, {
-                params: {
-                    action
-                },
+            const res = await axios.patch(`${import.meta.env.VITE_API_URL}/api/v1/blog/${id}`, null, {
+                params: { action },
                 withCredentials: true
             })
             if (res.data.success) {
@@ -145,7 +145,7 @@ const UpdateBlog = () => {
                         >
                             {selectBlog?.isPublished ? "UnPublish" : "Publish"}
                         </Button>
-                        <Button variant="destructive" onClick={deleteBlog}>Remove Course</Button>
+                        <Button variant="destructive" onClick={deleteBlog}>Delete Blog</Button>
                     </div>
                     <div className='pt-10'>
                         <Label>Title</Label>
@@ -177,7 +177,7 @@ const UpdateBlog = () => {
                                     <SelectItem value="Web Development">Web Development</SelectItem>
                                     <SelectItem value="Digital Marketing">Digital Marketing</SelectItem>
                                     <SelectItem value="Blogging">Blogging</SelectItem>
-                                    <SelectItem value="Photgraphy">Photgraphy</SelectItem>
+                                    <SelectItem value="Photography">Photography</SelectItem>
                                     <SelectItem value="Cooking">Cooking</SelectItem>
                                 </SelectGroup>
                             </SelectContent>

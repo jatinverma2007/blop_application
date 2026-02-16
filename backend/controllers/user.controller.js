@@ -69,7 +69,7 @@ export const register = async (req, res) => {
 export const login = async(req, res) => {
     try {
         const {email,  password } = req.body;
-        if (!email && !password) {
+        if (!email || !password) {
             return res.status(400).json({
                 success: false,
                 message: "All fields are required"
@@ -135,8 +135,11 @@ export const updateProfile = async(req, res) => {
         const {firstName, lastName, occupation, bio, instagram, facebook, linkedin, github} = req.body;
         const file = req.file;
 
-        const fileUri = getDataUri(file)
-        let cloudResponse = await cloudinary.uploader.upload(fileUri)
+        let cloudResponse;
+        if (file) {
+            const fileUri = getDataUri(file)
+            cloudResponse = await cloudinary.uploader.upload(fileUri)
+        }
 
         const user = await User.findById(userId).select("-password")
         

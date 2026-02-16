@@ -53,7 +53,7 @@ const CommentBox = ({ selectedBlog }) => {
     useEffect(() => {
         const getAllCommentsOfBlog = async () => {
             try {
-                const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/v1/comment/${selectedBlog._id}/comment/all`)
+                const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/v1/comment/${selectedBlog._id}/comment/all`, { withCredentials: true })
                 const data = res.data.comments
                 dispatch(setComment(data))
             } catch (error) {
@@ -174,10 +174,10 @@ const CommentBox = ({ selectedBlog }) => {
         <div>
             <div className='flex gap-4 mb-4 items-center'>
                 <Avatar>
-                    <AvatarImage src={user.photoUrl} />
+                    <AvatarImage src={user?.photoUrl} />
                     <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
-                <h3 className='font-semibold'>{user.firstName} {user.lastName}</h3>
+                <h3 className='font-semibold'>{user?.firstName} {user?.lastName}</h3>
             </div>
             <div className='flex gap-3'>
                 <Textarea

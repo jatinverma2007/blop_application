@@ -26,12 +26,15 @@ const BlogView = () => {
     const blogId = params.blogId
     const { blog } = useSelector(store => store.blog)
     const { user } = useSelector(store => store.auth)
-    const selectedBlog = blog.find(blog => blog._id === blogId)
-    const [blogLike, setBlogLike] = useState(selectedBlog?.likes.length)
+    const selectedBlog = blog?.find(blog => blog._id === blogId)
+    const [blogLike, setBlogLike] = useState(selectedBlog?.likes?.length || 0)
     const { comment } = useSelector(store => store.comment)
-    const [liked, setLiked] = useState(selectedBlog?.likes.includes(user?._id) || false);
+    const [liked, setLiked] = useState(selectedBlog?.likes?.includes(user?._id) || false);
     const dispatch = useDispatch()
-    console.log(selectedBlog);
+
+    if (!selectedBlog) {
+        return <div className='pt-20 text-center text-xl'>Blog not found or still loading...</div>
+    }
 
     const likeOrDislikeHandler = async () => {
         try {
@@ -54,8 +57,7 @@ const BlogView = () => {
             }
         } catch (error) {
             console.log(error);
-            toast.error(error.response.data.message)
-
+            toast.error(error?.response?.data?.message || "Something went wrong")
         }
     }
 
@@ -164,7 +166,7 @@ const BlogView = () => {
                             <Button onClick={likeOrDislikeHandler} variant="ghost" size="sm" className="flex items-center gap-1">
                                 {/* <Heart className="h-4 w-4"/> */}
                                 {
-                                    liked ? <FaHeart size={'24'} className='cursor-pointer text-red-600' /> : <FaRegHeart size={'24'} className='cursor-pointer hover:text-gray-600 text-white' />
+                                    liked ? <FaHeart size={'24'} className='cursor-pointer text-red-600' /> : <FaRegHeart size={'24'} className='cursor-pointer hover:text-gray-600' />
                                 }
 
                                 <span>{blogLike}</span>

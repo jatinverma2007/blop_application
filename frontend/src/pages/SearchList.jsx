@@ -12,11 +12,11 @@ const SearchList = () => {
     console.log(blog);
 
 
-    const filteredBlogs = blog.filter(
+    const filteredBlogs = (blog || []).filter(
         (blog) =>
-            blog.title.toLowerCase().includes(query) ||
-            blog.subtitle.toLowerCase().includes(query) ||
-            blog.category.toLowerCase() === query.toLowerCase()
+            blog?.title?.toLowerCase().includes(query) ||
+            blog?.subtitle?.toLowerCase().includes(query) ||
+            blog?.category?.toLowerCase() === query?.toLowerCase()
     );
    
     useEffect(()=>{
@@ -30,7 +30,7 @@ const SearchList = () => {
                 <div className='grid grid-cols-3 gap-7 my-10'>
                     {
                         filteredBlogs.map((blog, index) => {
-                            return <BlogCard  blog={blog} />
+                            return <BlogCard key={blog._id || index} blog={blog} />
                         })
                     }
 

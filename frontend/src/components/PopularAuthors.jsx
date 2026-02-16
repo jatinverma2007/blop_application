@@ -6,7 +6,7 @@ const PopularAuthors = () => {
     const [popularUser, setPopularUser] = useState([])
     const getAllUsers = async () => {
         try {
-            const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/v1/user/all-users`)
+            const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/v1/user/all-users`, { withCredentials: true })
             if (res.data.success) {
                 setPopularUser(res.data.users)
             }
