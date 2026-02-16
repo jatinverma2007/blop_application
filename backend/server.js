@@ -19,7 +19,11 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({extended:true}));
 app.use(cors({
-    origin: "https://mern-blog-ha28.onrender.com",
+    origin: [
+        "http://localhost:5173",
+        "https://blop-application.vercel.app",
+        process.env.FRONTEND_URL
+    ].filter(Boolean),
     credentials:true
 }))
 
