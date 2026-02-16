@@ -22,6 +22,7 @@ app.use(cors({
     origin: [
         "http://localhost:5173",
         "https://blop-application.vercel.app",
+        "https://blop-application-gxm3.onrender.com",
         process.env.FRONTEND_URL
     ].filter(Boolean),
     credentials:true
